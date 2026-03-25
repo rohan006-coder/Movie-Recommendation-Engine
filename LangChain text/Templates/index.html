@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Langchain Text Summarizer</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 40px auto;
+            max-width: 700px;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #005EA6;
+        }
+        #summary {
+            background: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 Gemini Text Summarizer</h1>
+    <textarea id="inputText" placeholder="Enter text here..."></textarea>
+    <br>
+    <button onclick="summarize()">Summarize</button>
+    <div id="summary"></div>
+
+    <script>
+        async function summarize() {
+            const text = document.getElementById("inputText").value;
+            const summaryDiv = document.getElementById("summary");
+            summaryDiv.innerHTML = "<em>Summarizing...</em>";
+
+            const response = await fetch("/summarize", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({text})
+            });
+
+            const data = await response.json();
+            summaryDiv.innerHTML = data.success ? `<b>Summary:</b><br>${data.summary}` : data.summary;
+        }
+    </script>
+</body>
+</html>
